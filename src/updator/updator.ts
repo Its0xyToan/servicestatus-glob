@@ -65,7 +65,7 @@ async function updator() {
 export const Updator = {
     startUpdator: () => {
         updator()
-        updatorId = setInterval(updator, 30_000)
+        updatorId = setInterval(updator, 120_000)
     },
     stopUpdator: () => {
         clearInterval(updatorId)
