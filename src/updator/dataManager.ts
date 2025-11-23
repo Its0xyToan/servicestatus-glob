@@ -22,7 +22,7 @@ export class DataManager {
         this.queue.push({ element, prov, game, isArray })
     }
 
-    // New, optimized push method
+// New, optimized push method
     async push() {
         logger.debug("Starting data push process with concurrent writes.")
 
@@ -51,13 +51,29 @@ export class DataManager {
         const writePromises = Array.from(groupedData.entries()).map(async ([filePath, newElements]) => {
             logger.debug(`Processing ${newElements.length} items for file: ${filePath}`);
 
-            let currentJson: { data: any[] } = { data: [] };
+            // --- START MODIFICATION ---
+            // 💡 Extract prov and game from the filePath since the original item.prov is out of scope.
+            const pathParts = filePath.split(path.sep);
+            const dataIndex = pathParts.findIndex(part => part === 'data');
+
+            let provName = "unknown_prov";
+            let gameName = "unknown_game"; // Also extracting game for completeness, though not strictly needed here
+
+            // Assuming the structure is .../data/{prov}/{game}/{date}.json
+            if (dataIndex !== -1 && pathParts.length > dataIndex + 2) {
+                provName = pathParts[dataIndex + 1]; // This is the {prov}
+                gameName = pathParts[dataIndex + 2]; // This is the {game}
+            }
+
+            // Line 60: Using the extracted provName
+            let currentJson: { name: string, status: string, data: any[] } = { name: provName, status: gameName, data: [] };
+            // --- END MODIFICATION ---
 
             try {
                 // Read the file content
                 const fileContent = await fs.readFile(filePath, { encoding: 'utf8' });
                 // Parse only if content exists, otherwise default to empty structure
-                currentJson = fileContent ? JSON.parse(fileContent) : { data: [] };
+                currentJson = fileContent ? JSON.parse(fileContent) : { name: provName, status: gameName, data: [] };
             } catch(e: any) {
                 if (e.code === "ENOENT") {
                     // Directory doesn't exist, create it. File will be created on write.

@@ -5,8 +5,6 @@ import { CloudflareStatus } from "../statuses/Cloudflare.js"
 import { TwitchStatus } from "../statuses/Twitch.js"
 import { DataManager } from "./dataManager.js"
 import type { Component } from "../types.js"
-import path from "node:path"
-import { fileURLToPath } from "node:url"
 
 let updatorId: any
 
@@ -36,17 +34,13 @@ async function updator() {
 
             if ("name" in status) {
                 dataManager.addQueue({
-                    prov: key,
-                    name: status.name,
-                    id: status.id,
+                    time: Date.now(),
                     status: status.status,
                     components: status?.components?.map((c) => ({
                         name: c.name,
-                        id: c.id,
                         status: c.status,
-                    })),
-                    time: Date.now(),
-                }, key, game, true)
+                    }))
+                }, key, status.name, true)
             }
         }
     }
