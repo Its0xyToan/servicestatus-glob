@@ -1,0 +1,30 @@
+{
+  "name": "servicestatus-global",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon src/index.ts",
+    "start": "node dist/index.js",
+    "test": "tsc && node dist/test.js"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "chalk": "^5.6.2",
+    "console-command": "^1.1.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5",
+    "@types/node": "^24.10.1",
+    "@types/ws": "^8",
+    "nodemon": "^3.1.11",
+    "typescript": "^5.5.3"
+  },
+  "private": true,
+  "packageManager": "yarn@4.9.4+sha512.7b1cb0b62abba6a537b3a2ce00811a843bea02bcf53138581a6ae5b1bf563f734872bd47de49ce32a9ca9dcaff995aa789577ffb16811da7c603dcf69e73750b"
+}
